@@ -24,9 +24,8 @@ Route::get('/Delete-Item-List-Cart/{id}', 'App\Http\Controllers\CartsController@
 Route::get('/Save-Item-List-Cart/{id}/{quanty}', 'App\Http\Controllers\CartsController@SaveItemListToCart');
 
 Route::get('/Update-Item-List-Cart/{id}/{quanty}', 'App\Http\Controllers\CartController@UpdateItemListCart');
-Route::get('/test-api-a', 'App\Http\Controllers\CartController@testAPI');
 
 //API
 Route::get('/Api/Product-Cart', 'App\Http\Controllers\ApiController@product_cart');
 Route::get('/Api/totalQuanty-Product-Cart', 'App\Http\Controllers\ApiController@total_product_cart');
-Route::get('/Api/Max-Category-Cart', 'App\Http\Controllers\ApiController@MaxCategoryCart');
+// Route::get('/Api/Max-Category-Cart', 'App\Http\Controllers\ApiController@MaxCategoryCart');

@@ -27,10 +27,6 @@ class CartsController extends Controller
         return view('buy-again',compact('cart'));   
     }
 
-    public function testAPI(){
-        $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
-        return $res[0];
-    }
 
     public function AddToCart(Request $req,$id){
         $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
