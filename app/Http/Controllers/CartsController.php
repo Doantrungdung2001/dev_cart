@@ -6,7 +6,7 @@ use App\Models\ItemCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-
+use GuzzleHttp\Client;
 class CartsController extends Controller
 {
     public function Index(){
@@ -26,6 +26,12 @@ class CartsController extends Controller
         $cart = DB::table('item_carts')->where('status',1)->get();
         return view('buy-again',compact('cart'));   
     }
+
+    public function testAPI(){
+        $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        return $res[0];
+    }
+
     public function AddToCart(Request $req,$id){
         $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
         // $id_user = $req->id;
@@ -48,6 +54,7 @@ class CartsController extends Controller
                         }else{
                             $cart_item->id_user = $id_user;
                             $cart_item->id_product = $item['id'];
+                            $cart_item->id_category = $prd['category_id'];
                             $cart_item->name = $prd['name'];
                             $cart_item->quanty = 1;
                             $cart_item->size = $item['size'];
@@ -63,42 +70,51 @@ class CartsController extends Controller
                 }
             }
         }
-        // $now_quanty = ItemCart::where('id_user',$id_user)->where('id_product',$id)->first();
-        // return $now_quanty->quanty;
+        $arr = ['status' => true,
+                'message'=>"Sản phẩm đã lưu thành công",
+                'data'=> $cart_item
+                ];
+        return response()->json($arr,201);
     }
 
     public function ViewToCart(){
-        $cart = DB::table('item_carts')->where('status',1)->get();
+        $id_user = 2;
+        $cart = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->get();
 
-        $totalQuanty = DB::table('item_carts')->where('status',1)->sum('quanty');
-        $totalPrice = DB::table('item_carts')->where('status',1)->sum('total_price');
+        $totalQuanty = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
+        $totalPrice = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('total_price');
         return view('cart',compact('cart'),compact('totalQuanty','totalPrice'));
     }
 
     public function DeleteItemListToCart($id){
-       if(ItemCart::where('id_product',$id)->exists()){
+        $id_user = 2;
+       if(ItemCart::where('id_user',$id_user)->where('id_product',$id)->exists()){
         ItemCart::where('id_product',$id)
         ->update(['status'=>0]);
        }
-       $cart = DB::table('item_carts')->where('status',1)->get();
-       $totalQuanty = DB::table('item_carts')->where('status',1)->sum('quanty');
-       $totalPrice = DB::table('item_carts')->where('status',1)->sum('total_price');
+       $cart = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->get();
+       $totalQuanty = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
+       $totalPrice = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('total_price');
        return view('list-cart',compact('cart'),compact('totalQuanty','totalPrice'));
     }
 
     public function SaveItemListToCart(Request $req,$id,$quanty){
-        if(ItemCart::where('id_product',$id)->exists()){
-            ItemCart::where('id_product',$id)
+        $id_user = 2;
+        if(ItemCart::where('id_user',$id_user)->where('id_product',$id)->exists()){
+            ItemCart::where('id_user',$id_user)->where('id_product',$id)
             ->update(['quanty'=>$quanty]);
-            $now_quanty = ItemCart::where('id_product',$id)->where('status',1)->first();
+            $now_quanty = ItemCart::where('id_user',$id_user)->where('id_product',$id)->where('status',1)->first();
             $i = $now_quanty->quanty;
             $cost = $now_quanty->price * $i;
-            ItemCart::where('id_product',$id)
+            ItemCart::where('id_user',$id_user)->where('id_product',$id)
             ->update(['total_price'=>$cost]);
         }
         $cart = DB::table('item_carts')->where('status',1)->get();
-        $totalQuanty = DB::table('item_carts')->where('status',1)->sum('quanty');
-        $totalPrice = DB::table('item_carts')->where('status',1)->sum('total_price');
+        $totalQuanty = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
+        $totalPrice = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
+        $totalPrice = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
+        $totalPrice = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('total_price');
         return view('list-cart',compact('cart'),compact('totalQuanty','totalPrice'));
     }
+
 }

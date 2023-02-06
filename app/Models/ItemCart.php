@@ -12,6 +12,7 @@ class ItemCart extends Model
     protected $fillable = [
         'id_user',
         'id_product',
+        'id_category',
         'name',
         'quanty',
         'size',
