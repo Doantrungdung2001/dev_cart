@@ -71,37 +71,39 @@
                             @foreach ($product as $prd)
                                 @if ($prd['sub_products'] != null)
                                     @foreach ($prd['sub_products'] as $item)
-                                        <div class="col-lg-4 col-sm-6">
-                                            <div class="product-item">
-
-                                                <div class="pi-pic">
-                                                    <img src="{{ $item['image_url'] }}" alt="">
-                                                    <div class="sale pp-sale">Sale</div>
-                                                    <div class="icon">
-                                                        <i class="icon_heart_alt"></i>
+                                        @if ($item['quantity'] != null && $item['quantity'] > 0 && $prd['sale_price'] != null && $prd['sale_price'] > 0)
+                                            <div class="col-lg-4 col-sm-6">
+                                                <div class="product-item">
+                                                    <div class="pi-pic">
+                                                        <img src="{{ $item['image_url'] }}" alt="">
+                                                        <div class="sale pp-sale">Sale</div>
+                                                        <div class="icon">
+                                                            <i class="icon_heart_alt"></i>
+                                                        </div>
+                                                        <ul>
+                                                            <li class="w-icon active"><a href="#"><i
+                                                                        class="icon_bag_alt"></i></a></li>
+                                                            <li class="quick-view"><a
+                                                                    onclick="AddCart({{ $item['id'] }})"
+                                                                    href="javascript:">+ Add Cart</a></li>
+                                                            <li class="w-icon"><a href="#"><i
+                                                                        class="fa fa-random"></i></a></li>
+                                                        </ul>
                                                     </div>
-                                                    <ul>
-                                                        <li class="w-icon active"><a href="#"><i
-                                                                    class="icon_bag_alt"></i></a></li>
-                                                        <li class="quick-view"><a onclick="AddCart({{ $item['id'] }})"
-                                                                href="javascript:">Thêm giỏ hàng</a></li>
-                                                        <li class="w-icon"><a href="#"><i
-                                                                    class="fa fa-random"></i></a></li>
-                                                    </ul>
-                                                </div>
 
-                                                <div class="pi-text">
-                                                    <div class="catagory-name">Towel</div>
-                                                    <a href="#">
-                                                        <h5>{{ $prd['name'] }}</h5>
-                                                    </a>
-                                                    <div class="product-price">
-                                                        {{ number_format($prd['sale_price']) }}₫
+                                                    <div class="pi-text">
+                                                        <div class="catagory-name">Towel</div>
+                                                        <a href="#">
+                                                            <h5>{{ $prd['name'] }}</h5>
+                                                        </a>
+                                                        <div class="product-price">
+                                                            {{ number_format($prd['sale_price']) }}₫
+                                                        </div>
                                                     </div>
-                                                </div>
 
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                     @endforeach
                                 @endif
                             @endforeach
@@ -256,8 +258,13 @@ Copyright &copy;<script>
                 type: 'GET',
 
                 success: function(response) {
-                    RenderCart(response);
-                    alertify.success('Thêm sản phẩm thành công');
+                    // RenderCart(response);
+                    console.log(response);
+                    if (response['message'] == 'Error') {
+                        alertify.error('Số luọng sản phẩm không đủ');
+                    } else {
+                        alertify.success('Thêm sản phẩm thành công');
+                    }
                 },
                 error: function(response, error) {
                     // handleException(request , message , error);
