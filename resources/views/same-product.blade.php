@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="assets/css/style.css" type="text/css">
     <style>
-        #change-item-cart table tbody tr td img{
+        #change-item-cart table tbody tr td img {
             width: 70px;
         }
     </style>
@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text product-more">
-                        <a href="{{url('/')}}"><i class="fa fa-home"></i> Home</a>
+                        <a href="{{ url('/') }}"><i class="fa fa-home"></i> Home</a>
                         <span>Shopping Cart</span>
                     </div>
                 </div>
@@ -53,9 +53,9 @@
         <div class="container">
             <nav class="nav-menu mobile-menu">
                 <ul>
-                    <li><a href="{{url('/Cart')}}">Giỏ hàng</a></li>
-                    <li><a href="{{url('/same-product')}}">Sản phẩm tương tự</a></li>
-                    <li><a href="{{url('/buy-again')}}">Mua lại hàng</a></li>
+                    <li><a href="{{ url('/Cart') }}">Giỏ hàng</a></li>
+                    <li><a href="{{ url('/same-product') }}">Sản phẩm tương tự</a></li>
+                    <li><a href="{{ url('/buy-again') }}">Mua lại hàng</a></li>
                 </ul>
             </nav>
             <div id="mobile-menu-wrap"></div>
@@ -68,47 +68,50 @@
                 <div class="col-lg-12 order-1 order-lg-2">
                     <div class="product-list">
                         <div class="row">
-                            @foreach($product as $prd)
-                                @if($prd['sub_products'] != null )
-                                    @foreach($prd['sub_products'] as $item)
-                                    <div class="col-lg-4 col-sm-6">
-                                        <div class="product-item">
-                                            
-                                            <div class="pi-pic">
-                                                <img src="{{$item['image_url']}}" alt="" >
-                                                <div class="sale pp-sale">Sale</div>
-                                                <div class="icon">
-                                                    <i class="icon_heart_alt"></i>
+                            @foreach ($product as $prd)
+                                @if ($prd['sub_products'] != null)
+                                    @foreach ($prd['sub_products'] as $item)
+                                        @if ($item['quantity'] != null && $item['quantity'] > 0 && $prd['sale_price'] != null && $prd['sale_price'] > 0)
+                                            <div class="col-lg-4 col-sm-6">
+                                                <div class="product-item">
+                                                    <div class="pi-pic">
+                                                        <img src="{{ $item['image_url'] }}" alt="">
+                                                        <div class="sale pp-sale">Sale</div>
+                                                        <div class="icon">
+                                                            <i class="icon_heart_alt"></i>
+                                                        </div>
+                                                        <ul>
+                                                            <li class="w-icon active"><a href="#"><i
+                                                                        class="icon_bag_alt"></i></a></li>
+                                                            <li class="quick-view"><a
+                                                                    onclick="AddCart({{ $item['id'] }})"
+                                                                    href="javascript:">+ Add Cart</a></li>
+                                                            <li class="w-icon"><a href="#"><i
+                                                                        class="fa fa-random"></i></a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="pi-text">
+                                                        <div class="catagory-name">Towel</div>
+                                                        <a href="#">
+                                                            <h5>{{ $prd['name'] }}</h5>
+                                                        </a>
+                                                        <div class="product-price">
+                                                            {{ number_format($prd['sale_price']) }}₫
+                                                        </div>
+                                                    </div>
+
                                                 </div>
-                                                <ul>
-                                                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                                    <li class="quick-view" ><a onclick="AddCart({{$item['id']}})" href="javascript:">Thêm giỏ hàng</a></li>
-                                                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                                </ul>
                                             </div>
-                                            
-                                            <div class="pi-text">
-                                                <div class="catagory-name">Towel</div>
-                                                <a href="#">
-                                                    <h5>{{$prd['name']}}</h5>
-                                                </a>
-                                                <div class="product-price">
-                                                    {{number_format($prd['cost'])}}₫
-                                                </div>
-                                            </div>
-                                           
-                                        </div>
-                                    </div>                           
-                                                               
-                                    
-                                    @endforeach          
+                                        @endif
+                                    @endforeach
                                 @endif
-                             @endforeach                          
+                            @endforeach
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
     <!-- Product Shop Section End -->
@@ -208,8 +211,10 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="copyright-text">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. 
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://www.facebook.com/thuy.huynhvan" target="_blank">Huynh Van Thuy</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0.
+Copyright &copy;<script>
+    document.write(new Date().getFullYear());
+</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://www.facebook.com/thuy.huynhvan" target="_blank">Huynh Van Thuy</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </div>
                         <div class="payment-pic">
@@ -238,47 +243,51 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <!-- Default theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
     <!-- Semantic UI theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
     <!-- Bootstrap theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
 
     <script>
-
-        function AddCart(id){
+        function AddCart(id) {
             $.ajax({
-                url:'AddtoCart/'+id,
-                type:'GET', 
-                
-                success:function(response){
-                    RenderCart(response);
-                    alertify.success('Thêm sản phẩm thành công');
+                url: 'AddtoCart/' + id,
+                type: 'GET',
+
+                success: function(response) {
+                    // RenderCart(response);
+                    console.log(response);
+                    if (response['message'] == 'Error') {
+                        alertify.error('Số luọng sản phẩm không đủ');
+                    } else {
+                        alertify.success('Thêm sản phẩm thành công');
+                    }
                 },
-                error:function(response , error){
+                error: function(response, error) {
                     // handleException(request , message , error);
                     console.log(error);
                     console.log(response);
                 }
             });
         }
-            //console.log(id);
-        $("#change-item-cart").on("click",".si-close i",function(){
+        //console.log(id);
+        $("#change-item-cart").on("click", ".si-close i", function() {
             //console.log($(this).data("id"));
             $.ajax({
-                url:'Delete-Item-Cart/'+$(this).data("id"),
-                type:'GET',
-            }).done(function(response){
+                url: 'Delete-Item-Cart/' + $(this).data("id"),
+                type: 'GET',
+            }).done(function(response) {
                 RenderCart(response);
                 // $("#change-item-cart").empty();
                 // $("#change-item-cart").html(response);
                 alertify.success('Xóa sản phẩm thành công');
             });
         });
-        
-        function RenderCart(response){
+
+        function RenderCart(response) {
             $("#change-item-cart").empty();
             $("#change-item-cart").html(response);
             $("#total-quanty-show").text($("#total-quanty-cart").val());
