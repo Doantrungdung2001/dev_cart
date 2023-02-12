@@ -7,7 +7,7 @@
     <meta name="keywords" content="Fashi, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cart</title>
+    <title>Dashboard</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
@@ -31,8 +31,11 @@
     <div class="container">
         <div class="row">
             <div cclass="col-sm-6">
+                <canvas id="myPieChart" style="width:100%;max-width:700px"></canvas>
+            </div>
+            <div cclass="col-sm-6">
                 <div class="cart-table">
-                    <h2>Những sản phẩm được thanh toán nhiều nhất khi thêm vào giỏ hàng</h2>
+                    <h2>Những sản phẩm được thanh toán nhiều nhất sau khi thêm vào giỏ hàng</h2>
                     <table>
                         <thead>
                             <tr>
@@ -54,7 +57,7 @@
                                     <td class="p-price first-row">{{ number_format($item->price) }}₫</td>
                                     <td class="qua-col first-row">{{ number_format($item->totalProduct) }}</td>
                                     <td class="size-td first-row">{{ $item->size }}</td>
-                                    <td lass="color-td first-row">{{ $item->color }}</td>
+                                    <td class="color-td first-row">{{ $item->color }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -63,7 +66,7 @@
             </div>
             <div cclass="col-sm-6">
                 <div class="cart-table">
-                    <h2>Những sản phẩm bị xóa nhiều nhất khi thêm vào giỏ hàng</h2>
+                    <h2>Những sản phẩm bị xóa nhiều nhất sau khi thêm vào giỏ hàng</h2>
                     <table>
                         <thead>
                             <tr>
@@ -85,7 +88,7 @@
                                     <td class="p-price first-row">{{ number_format($item->price) }}₫</td>
                                     <td class="qua-col first-row">{{ number_format($item->totalProduct) }}</td>
                                     <td class="size-td first-row">{{ $item->size }}</td>
-                                    <td lass="color-td first-row">{{ $item->color }}</td>
+                                    <td class="color-td first-row">{{ $item->color }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -95,6 +98,46 @@
 
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: {!! json_encode($labels) !!},
+                datasets: [{
+                    data: {!! json_encode($dataset) !!},
+                    backgroundColor: ['#4e73df', '#1cc88a'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    position: 'left',
+                    display: true
+
+                },
+                cutoutPercentage: 80,
+                title: {
+                    position: 'bottom',
+                    display: true,
+                    text: 'Người dùng:'
+                },
+            },
+        });
+    </script>
 </body>
 
 </html>
