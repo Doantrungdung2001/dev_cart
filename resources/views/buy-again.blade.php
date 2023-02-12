@@ -92,16 +92,16 @@
                             <tbody>
                                 @foreach($product as $item)
                                 <tr>
-                                    <td class="cart-pic-buy-again second-row"><img src="{{$item["img"]}}" alt=""></td>
+                                    <td class="cart-pic-buy-again second-row"><img src="{{$item['img']}}" alt=""></td>
                                     <td class="cart-title second-row">
                                         <div class="row2">
                                             <div class="col-lg-12 offset-lg-24">
                                                 <div class="proceed-checkout">
                                                     <ul>
-                                                        <li class="subtotal">Tên sản phẩm  : <span>{{$item["productName"]}}</span></li>
-                                                        <li class="cart-total">Kích thước :<span>{{$item["size"]}}</span></li>
-                                                        <li class="cart-total">Màu sắc :<span>{{$item["color"]}}</span></li>
-                                                        <li class="cart-total">Giá :<span>{{number_format($item["price"])}}₫</span></li>
+                                                        <li class="subtotal">Tên sản phẩm  : <span>{{$item['productName']}}</span></li>
+                                                        <li class="cart-total">Kích thước :<span>{{$item['size']}}</span></li>
+                                                        <li class="cart-total">Màu sắc :<span>{{$item['color']}}</span></li>
+                                                        <li class="cart-total">Giá :<span>{{number_format($item['price'])}}₫</span></li>
                                                     </ul>
                                                     
                                                 </div>
@@ -110,7 +110,8 @@
                                         <div class="row2">
                                             <div class="col-lg-4 offset-lg-8">
                                                 <div class="proceed-checkout">
-                                                    <a href="#" class="proceed-btn">Mua lại hàng</a>
+                                                    <a onclick="AddCart({{ $item['productId'] }})" href="javascript:" class="proceed-btn">Mua lại hàng</a>
+                                                    {{-- <a href="#" class="proceed-btn-2">Xóa</a> --}}
                                                     {{-- <a href="#" class="proceed-btn-2">Xóa</a> --}}
                                                 </div>
                                             </div>
@@ -173,67 +174,29 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
     <script>
-        function DeleteItemListCart(id){
-            //console.log(id);
+        function AddCart(id) {
             $.ajax({
-                url:'Delete-Item-List-Cart/'+id,
-                type:'GET',
-            }).done(function(response){
-            
-                RenderListCart(response);
-                alertify.success('Xóa sẩn phẩm thành công');
-            });
-        }
-        
-        function SaveItemListCart(id){
-            //console.log(id);
-            
-            $.ajax({
-                url:'Save-Item-List-Cart/'+id+'/'+$("#quanty-item-"+id).val(),
-                type:'GET',
-            }).done(function(response){
-                //console.log($("#quanty-item-"+id).val());
-                if($("#quanty-item-"+id).val() == 0){
-                    DeleteItemListCart(id);
-                }else{
-                    if($("#quanty-item-"+id).val() >= 100){
-                        alertify.success('Cập nhật thất bại');
-                    }else{
-                        RenderListCart(response);
-                        alertify.success('Cập nhật thành công');
-                    }
-                }
-                
-            });
-           
-        }
-        
-        function RenderListCart(response){
-            $("#list-cart").empty();
-            $("#list-cart").html(response);
-            /*-------------------
-		    Quantity change
-	        --------------------- */
-            var proQty = $('.pro-qty');
-            proQty.prepend('<span class="dec qtybtn">-</span>');
-            proQty.append('<span class="inc qtybtn">+</span>');
-            proQty.on('click', '.qtybtn', function () {
-                var $button = $(this);
-                var oldValue = $button.parent().find('input').val();
-                if ($button.hasClass('inc')) {
-                    var newVal = parseFloat(oldValue) + 1;
-                } else {
-                    // Don't allow decrementing below zero
-                    if (oldValue > 0) {
-                        var newVal = parseFloat(oldValue) - 1;
+                url: 'AddtoCart/' + id,
+                type: 'GET',
+
+                success: function(response) {
+                    // RenderCart(response);
+                    console.log(response);
+                    if (response['message'] == 'Error') {
+                        alertify.error('Số luọng sản phẩm không đủ');
                     } else {
-                        newVal = 0;
+                        alertify.success('Thêm sản phẩm thành công');
                     }
+                },
+                error: function(response, error) {
+                    // handleException(request , message , error);
+                    console.log(error);
+                    console.log(response);
                 }
-                $button.parent().find('input').val(newVal);
             });
+            console.log(id);
+
         }
     </script>
 </body>
-
 </html>
