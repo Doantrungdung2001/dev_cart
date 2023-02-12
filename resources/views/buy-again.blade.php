@@ -48,7 +48,7 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb-text product-more">
                         <a href=""><i class="fa fa-home"></i> Home</a>
-                        <span>Shopping Cart</span>
+                        <span>Cart</span>
                     </div>
                 </div>
             </div>
@@ -90,18 +90,18 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($cart as $item)
+                                @foreach($product as $item)
                                 <tr>
-                                    <td class="cart-pic-buy-again second-row"><img src="{{$item->image_url}}" alt=""></td>
+                                    <td class="cart-pic-buy-again second-row"><img src="{{$item["img"]}}" alt=""></td>
                                     <td class="cart-title second-row">
                                         <div class="row2">
                                             <div class="col-lg-12 offset-lg-24">
                                                 <div class="proceed-checkout">
                                                     <ul>
-                                                        <li class="subtotal">Tên sản phẩm  : <span>{{$item->name}}</span></li>
-                                                        <li class="cart-total">Giá :<span>{{number_format($item->price)}}₫</span></li>
-                                                        <li class="cart-total">Giá :<span>{{number_format($item->price)}}₫</span></li>
-                                                        <li class="cart-total">Giá :<span>{{number_format($item->price)}}₫</span></li>
+                                                        <li class="subtotal">Tên sản phẩm  : <span>{{$item["productName"]}}</span></li>
+                                                        <li class="cart-total">Kích thước :<span>{{$item["size"]}}</span></li>
+                                                        <li class="cart-total">Màu sắc :<span>{{$item["color"]}}</span></li>
+                                                        <li class="cart-total">Giá :<span>{{number_format($item["price"])}}₫</span></li>
                                                     </ul>
                                                     
                                                 </div>
@@ -111,7 +111,7 @@
                                             <div class="col-lg-4 offset-lg-8">
                                                 <div class="proceed-checkout">
                                                     <a href="#" class="proceed-btn">Mua lại hàng</a>
-                                                    <a href="#" class="proceed-btn-2">Xóa</a>
+                                                    {{-- <a href="#" class="proceed-btn-2">Xóa</a> --}}
                                                 </div>
                                             </div>
                                         </div>

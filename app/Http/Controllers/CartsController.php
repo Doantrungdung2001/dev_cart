@@ -23,8 +23,9 @@ class CartsController extends Controller
     
     }
     public function BuyAgain(){
-        $cart = DB::table('item_carts')->where('status',1)->get();
-        return view('buy-again',compact('cart'));   
+        $res = Http::get('http://103.179.173.95:81/api/listOrderByUser/2');
+        // return $res[0]["products"]; 
+        return view('buy-again',['product'=> $res[0]["products"]]);
     }
 
 
