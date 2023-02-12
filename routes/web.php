@@ -30,6 +30,5 @@ Route::get('/Dashboard', 'App\Http\Controllers\CartsController@Dashboard');
 //API
 Route::get('/Api/Product-Cart', 'App\Http\Controllers\ApiController@product_cart');
 Route::get('/Api/totalQuanty-Product-Cart', 'App\Http\Controllers\ApiController@total_product_cart');
-// Route::get('/Api/Max-Category-Cart', 'App\Http\Controllers\ApiController@MaxCategoryCart');
 Route::get('/Api/Reset-Cart/{id_user}', 'App\Http\Controllers\ApiController@resetCart');
 

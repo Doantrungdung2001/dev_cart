@@ -85,7 +85,7 @@
                                                                         class="icon_bag_alt"></i></a></li>
                                                             <li class="quick-view"><a
                                                                     onclick="AddCart({{ $item['id'] }})"
-                                                                    href="javascript:">+ Add Cart</a></li>
+                                                                    href="javascript:">Thêm giỏ hàng</a></li>
                                                             <li class="w-icon"><a href="#"><i
                                                                         class="fa fa-random"></i></a></li>
                                                         </ul>
