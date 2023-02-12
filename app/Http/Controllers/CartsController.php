@@ -137,5 +137,30 @@ class CartsController extends Controller
         $totalPrice = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('total_price');
         return view('list-cart',compact('cart','totalQuanty','totalPrice', 'message'));
     }
+    public function Dashboard() {
+		$labels = ['Số sản phẩm được thanh toán', 'Số sản phẩm bị xóa'];
+        $dataset = [];
+        $data1 = DB::table('item_carts')->where('status', 2)->sum('quanty');
+        $data2 = DB::table('item_carts')->where('status', 0)->sum('quanty');
+        array_push($dataset, $data1);
+        array_push($dataset, $data2);
+        $list1 = DB::table('item_carts')
+        ->select('id_product', 'name', 'size', 'color', 'image_url', 'price', DB::raw('SUM(quanty) as totalProduct'))
+        ->where('status',2)
+        ->groupBy('id_product', 'name', 'size', 'color', 'image_url', 'price')
+        ->orderBy('totalProduct', 'desc')
+        ->limit(5)
+        ->get();
+
+        $list2 = DB::table('item_carts')
+        ->select('id_product', 'name', 'size', 'color', 'image_url', 'price', DB::raw('SUM(quanty) as totalProduct'))
+        ->where('status', 0)
+        ->groupBy('id_product', 'name', 'size', 'color', 'image_url', 'price')
+        ->orderBy('totalProduct', 'desc')
+        ->limit(5)
+        ->get();
+        // dd($total);
+        return view('dashboard', compact('labels', 'dataset','list1', 'list2'));
+    }
 
 }

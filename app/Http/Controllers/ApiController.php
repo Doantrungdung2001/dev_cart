@@ -46,4 +46,14 @@ class ApiController extends Controller
         ];
         return response()->json($arr, 201);
     }
+
+    public function resetCart($id_user) {
+        $items = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->get();
+        foreach($items as $item) {
+            DB::table('item_carts')->where('id',$item->id)->update([
+                'status' => 2
+            ]);
+        }
+        return response()->json(['message' => 'success'], 200);
+    }
 }
