@@ -207,7 +207,8 @@
                             @foreach ($product as $prd)
                                 @if ($prd['sub_products'] != null)
                                     @foreach ($prd['sub_products'] as $item)
-                                        @if ($item['quantity'] != null && $item['quantity'] > 0 && $prd['sale_price'] != null && $prd['sale_price'] > 0)
+                                        {{-- @if ($item['quantity'] != null && $item['quantity'] > 0 && $prd['sale_price'] != null && $prd['sale_price'] > 0) --}}
+                                        @if ($item['quantity'] != null && $item['quantity'] > 0)
                                             <div class="col-lg-4 col-sm-6">
                                                 <div class="product-item">
                                                     <div class="pi-pic">

@@ -10,7 +10,8 @@ use GuzzleHttp\Client;
 class CartsController extends Controller
 {
     public function Index(){
-        $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        // $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
         return view('home',['product'=> $res['data']]);
         // $product = DB::table('product')->get();
        
@@ -18,7 +19,8 @@ class CartsController extends Controller
     
     }
     public function SameProduct(){
-        $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        // $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
         return view('same-product',['product'=> $res['data']]);
     
     }
@@ -30,9 +32,14 @@ class CartsController extends Controller
 
 
     public function AddToCart(Request $req,$id){
-        $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
-        // $id_user = $req->id;
-        $id_user = 2;
+        // $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
+        if($req->user_id != NULL){
+            $id_user = $req->user_id;
+        }else{
+            $id_user = 64;
+        }
+
         $cart_item = new ItemCart();
         foreach($res['data'] as $prd){
             if($prd['sub_products'] != null){
@@ -83,8 +90,12 @@ class CartsController extends Controller
         return response()->json($arr,200);
     }
 
-    public function ViewToCart(){
-        $id_user = 2;
+    public function ViewToCart(Request $req){
+        if($req->user_id != NULL){
+            $id_user = $req->user_id;
+        }else{
+            $id_user = 64;
+        }
         $cart = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->get();
 
         $totalQuanty = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
@@ -92,8 +103,12 @@ class CartsController extends Controller
         return view('cart',compact('cart','totalQuanty','totalPrice'));
     }
 
-    public function DeleteItemListToCart($id){
-        $id_user = 2;
+    public function DeleteItemListToCart(Request $req,$id){
+        if($req->user_id != NULL){
+            $id_user = $req->user_id;
+        }else{
+            $id_user = 64;
+        }
        if(ItemCart::where('id_user',$id_user)->where('id_product',$id)->exists()){
         ItemCart::where('id_product',$id)
         ->update(['status'=>0]);
@@ -106,9 +121,14 @@ class CartsController extends Controller
     }
 
     public function SaveItemListToCart(Request $req,$id,$quanty){
-        $id_user = 2;
+        if($req->user_id != NULL){
+            $id_user = $req->user_id;
+        }else{
+            $id_user = 64;
+        }
         if(ItemCart::where('id_user',$id_user)->where('id_product',$id)->exists()){
-            $products = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+            // $products = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+            $products = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
             foreach($products['data'] as $prd){
                 if($prd['sub_products'] != null){
                     foreach($prd['sub_products'] as $item){
@@ -131,7 +151,7 @@ class CartsController extends Controller
                 }
             }
         }
-        $cart = DB::table('item_carts')->where('status',1)->get();
+        $cart = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->get();
         $totalQuanty = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
         $totalPrice = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
         $totalPrice = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
