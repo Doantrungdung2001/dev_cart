@@ -68,7 +68,7 @@
                 <div class="col-lg-12 order-1 order-lg-2">
                     <div class="product-list">
                         <div class="row">
-                            @foreach ($product as $prd)
+                            {{-- @foreach ($product as $prd)
                                 @if ($prd['sub_products'] != null)
                                     @foreach ($prd['sub_products'] as $item)
                                         @if ($item['quantity'] != null && $item['quantity'] > 0 && $prd['sale_price'] != null && $prd['sale_price'] > 0)
@@ -105,6 +105,45 @@
                                             </div>
                                         @endif
                                     @endforeach
+                                @endif
+                            @endforeach --}}
+                            @foreach ($product as $prd)
+                                @if ($prd['sub_products'] != null)
+                                @if ($prd['sale_price'] != null && $prd['sale_price'] > 0)
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="product-item">
+                                            <div class="pi-pic">
+                                                <img src="{{ $prd['sub_products'][0]['image_url'] }}" alt="">
+                                                <div class="sale pp-sale">Sale</div>
+                                                <div class="icon">
+                                                    <i class="icon_heart_alt"></i>
+                                                </div>
+                                                <ul>
+                                                    <li class="w-icon active"><a href="#"><i
+                                                                class="icon_bag_alt"></i></a></li>
+                                                    <li class="quick-view"><a
+                                                            onclick="AddCart({{ $prd['sub_products'][0]['id'] }})"
+                                                            href="javascript:">Thêm giỏ hàng</a></li>
+                                                    <li class="w-icon"><a href="#"><i
+                                                                class="fa fa-random"></i></a></li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="pi-text">
+                                                <div class="catagory-name">Towel</div>
+                                                <a href="#">
+                                                    <h5>{{ $prd['name'] }}</h5>
+                                                </a>
+                                                <div class="product-price">
+                                                    {{ number_format($prd['sale_price']) }}₫
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                            @endif
+                                        
+                                    
                                 @endif
                             @endforeach
                         </div>
@@ -153,7 +192,7 @@
     <!-- Footer Section Begin -->
     <footer class="footer-section">
         <div class="container">
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-lg-3">
                     <div class="footer-left">
                         <div class="footer-logo">
@@ -204,7 +243,7 @@
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="copyright-reserved">
             <div class="container">
