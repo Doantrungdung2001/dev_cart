@@ -23,7 +23,7 @@ class ApiController extends Controller
         if($req->user_id != NULL){
             $id_user = $req->user_id;
         }else{
-            $id_user = 64;
+            $id_user = 4;
         }
         $product = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->get();
         $totalQuanty = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
@@ -43,7 +43,7 @@ class ApiController extends Controller
         if($req->user_id != NULL){
             $id_user = $req->user_id;
         }else{
-            $id_user = 64;
+            $id_user = 4;
         }
         $totalQuanty = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->sum('quanty');
     

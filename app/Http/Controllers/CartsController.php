@@ -36,7 +36,7 @@ class CartsController extends Controller
         if($req->user_id != NULL){
             $id_user = $req->user_id;
         }else{
-            $id_user = 64;
+            $id_user = 4;
         }
         if($req->product_id != NULL){
             $id= $req->product_id; 
@@ -104,7 +104,7 @@ class CartsController extends Controller
         if($req->user_id != NULL){
             $id_user = $req->user_id;
         }else{
-            $id_user = 64;
+            $id_user = 4;
         }
         if($req->product_id != NULL){
             $id= $req->product_id; 
@@ -172,7 +172,7 @@ class CartsController extends Controller
         if($req->user_id != NULL){
             $id_user = $req->user_id;
         }else{
-            $id_user = 64;
+            $id_user = 4;
         }
 
         $cart_item = new ItemCart();
@@ -229,7 +229,7 @@ class CartsController extends Controller
         if($req->user_id != NULL){
             $id_user = $req->user_id;
         }else{
-            $id_user = 64;
+            $id_user = 4;
         }
         $cart = DB::table('item_carts')->where('id_user',$id_user)->where('status',1)->get();
 
@@ -242,7 +242,7 @@ class CartsController extends Controller
         if($req->user_id != NULL){
             $id_user = $req->user_id;
         }else{
-            $id_user = 64;
+            $id_user = 4;
         }
        if(ItemCart::where('id_user',$id_user)->where('id_product',$id)->exists()){
         ItemCart::where('id_product',$id)
@@ -259,7 +259,7 @@ class CartsController extends Controller
         if($req->user_id != NULL){
             $id_user = $req->user_id;
         }else{
-            $id_user = 64;
+            $id_user = 4;
         }
         if(ItemCart::where('id_user',$id_user)->where('id_product',$id)->exists()){
             $products = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
