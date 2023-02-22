@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'App\Http\Controllers\CartsController@Index');
 Route::get('/AddtoCart/{id}', 'App\Http\Controllers\CartsController@AddToCart');
 Route::post('/AddtoCart', 'App\Http\Controllers\CartsController@AddCart');
+Route::get('/AddtoCart1', 'App\Http\Controllers\CartsController@AddCart1');
 Route::get('/Delete-Item-Cart/{id}', 'App\Http\Controllers\CartsController@DeleteItemToCart');
 
 Route::get('/Cart', 'App\Http\Controllers\CartsController@ViewtoCart');
