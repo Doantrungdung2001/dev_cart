@@ -10,8 +10,8 @@ use GuzzleHttp\Client;
 class CartsController extends Controller
 {
     public function Index(){
-        // $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
-        $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
+        $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        // $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
         return view('home',['product'=> $res['data']]);
         // $product = DB::table('product')->get();
        
@@ -19,8 +19,8 @@ class CartsController extends Controller
     
     }
     public function SameProduct(){
-        // $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
-        $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
+        $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        // $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
         return view('same-product',['product'=> $res['data']]);
     
     }
@@ -30,10 +30,77 @@ class CartsController extends Controller
         return view('buy-again',['product'=> $res[0]["products"]]);
     }
 
+    public function AddCart(Request $req){
+        $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        // $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
+        if($req->user_id != NULL){
+            $id_user = $req->user_id;
+        }else{
+            $id_user = 64;
+        }
+        if($req->product_id != NULL){
+            $id= $req->product_id; 
+        }else{
+            $id = 1;
+        }
+        if($req->quantity != NULL){
+            $quantity= $req->quantity; 
+        }else{
+            $quantity = 1;
+        }
+        $cart_item = new ItemCart();
+        foreach($res['data'] as $prd){
+            if($prd['sub_products'] != null){
+                foreach($prd['sub_products'] as $item){
+                    if($item['id'] == $id){
+                        if(ItemCart::where('id_user',$id_user)->where('id_product',$id)->where('status',1)->exists()) {
+                            $now_quanty = ItemCart::where('id_user',$id_user)->where('id_product',$id)->where('status',1)->first();
+                            if ($item['quantity'] >= $quantity) {
+                                $i = $now_quanty->quanty + $quantity;
+                                $sale_price = $prd['sale_price'] * $i;
+                                ItemCart::where('id_user',$id_user)
+                                ->where('id_product',$id)
+                                ->update(['quanty'=>$i]);
+                                ItemCart::where('id_user',$id_user)
+                                ->where('id_product',$id)
+                                ->update(['total_price'=>$sale_price]);
+                                $arr = ['message'=>"Success"];
+                            }
+                            else {
+                                $arr = ['message'=>"Error"];
+                            }
+                        }else{
+                            if (($item['quantity'] != null) && ($item['quantity'] >= $quantity)) {
+                                $cart_item->id_user = $id_user;
+                                $cart_item->id_product = $item['id'];
+                                $cart_item->id_category = $prd['category_id'];
+                                $cart_item->name = $prd['name'];
+                                $cart_item->quanty = $quantity;
+                                $cart_item->size = $item['size'];
+                                $cart_item->color = $item['color'];
+                                $cart_item->price = $prd['sale_price'];
+                                $cart_item->total_price = $prd['sale_price'];
+                                $cart_item->image_url = $item['image_url'];
+                                $cart_item->status = 1;
+                                $cart_item->save();
 
+                                $arr = ['message'=>"Success"];
+                            }
+                            else {
+                                $arr = ['message'=>"Error"];
+                            }
+                            
+                        }
+                    }
+                }
+            }
+        }
+        return response()->json($arr,200);
+    }
+    
     public function AddToCart(Request $req,$id){
-        // $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
-        $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
+        $res = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+        // $res = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
         if($req->user_id != NULL){
             $id_user = $req->user_id;
         }else{
@@ -127,8 +194,8 @@ class CartsController extends Controller
             $id_user = 64;
         }
         if(ItemCart::where('id_user',$id_user)->where('id_product',$id)->exists()){
-            // $products = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
-            $products = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
+            $products = Http::get('https://p01-product-api-production.up.railway.app/api/user/products');
+            // $products = Http::get('https://p01-product-api-production-e005.up.railway.app/api/user/products');
             foreach($products['data'] as $prd){
                 if($prd['sub_products'] != null){
                     foreach($prd['sub_products'] as $item){
