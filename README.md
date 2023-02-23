@@ -12,7 +12,8 @@ This project was generated with [Laravel](https://laravel.com/docs/10.x).
 
 1. Clone Project
 2. Composer install
-3. php artisan serve
+3. php artisan migrate
+4. php artisan serve
 
 ## If file .env can't install
 
